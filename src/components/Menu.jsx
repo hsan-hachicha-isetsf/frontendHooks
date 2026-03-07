@@ -22,6 +22,8 @@ function Menu() {
             <Nav.Link as={Link} to="/categories">Catégories</Nav.Link>
             <Nav.Link as={Link} to="/scategories">S/Catégories</Nav.Link>
             <Nav.Link as={Link} to="/articles">Articles</Nav.Link>
+            <Nav.Link as={Link} to="/client">Client</Nav.Link>
+
             
             
           </Nav>
