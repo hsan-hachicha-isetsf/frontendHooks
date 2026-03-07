@@ -12,6 +12,6 @@ return await Api.delete(ARTICLE_API + '/' + articleId);
 export const addarticle=async(article)=> {
 return await Api.post(ARTICLE_API, article);
 }
-export const editarticle=(article) =>{
-return Api.put(ARTICLE_API + '/' + article._id, article);
+export const editarticle=async(article) =>{
+return await Api.put(ARTICLE_API + '/' + article._id, article);
 }

@@ -6,7 +6,6 @@ import 'react-confirm-alert/src/react-confirm-alert.css'; // Imp
 import Insertarticle from "./Insertarticle";
 const ArticlesApp = () => {
     const[products,setProducts]=useState([]);
-
     const getAllArticles=async()=>{
         try {
             const response=await fetcharticles();   
@@ -48,8 +47,9 @@ const updateProduct=(updatedproduit)=>{
 }
   return (
     <div>
-        <Insertarticle addproduct={addProduct} />
-      <ArticleList products={products} deleteProduct={deleteProduct} />
+       { 
+    <Insertarticle addproduct={addProduct} />}
+      <ArticleList products={products} deleteProduct={deleteProduct} updateProduct={updateProduct} />
       
     </div>
   )

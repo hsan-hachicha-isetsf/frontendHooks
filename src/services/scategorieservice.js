@@ -15,6 +15,6 @@ return await Api.delete(SCATEGORIE_API + '/' + scategorieId);
 export const addscategorie=async(scategorie)=> {
 return await Api.post(SCATEGORIE_API,scategorie);
 }
-export const editscategorie=(scategorie) =>{
-return Api.put(SCATEGORIE_API + '/' + scategorie._id, scategorie);
+export const editscategorie=async(scategorie) =>{
+return await Api.put(SCATEGORIE_API + '/' + scategorie._id, scategorie);
 }

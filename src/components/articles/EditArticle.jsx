@@ -5,7 +5,7 @@ import Col from 'react-bootstrap/Col';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row';
 import Modal from 'react-bootstrap/Modal';
-import { addarticle } from '../../services/articleservice';
+import { addarticle, editarticle } from '../../services/articleservice';
 import {fetchscategories} from "../../services/scategorieservice"
 import { useEffect } from 'react';
 import axios from "axios"
@@ -16,19 +16,23 @@ import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css' 
 registerPlugin(FilePondPluginImageExifOrientation,FilePondPluginImagePreview)
 
-const Insertarticle = ({addproduct}) => {
-const [article,setArticle]=useState({})
+const EditArticle = ({show,art,updateproduct,handleClose}) => {
+const [article,setArticle]=useState(art)
 //const[article,setArticle]=useState({})
 const[scategories,setScategories]=useState([])
 const [files, setFiles] = useState([]);
 const [validated, setValidated] = useState(false);
-const [show, setShow] = useState(false);
 
-const handleClose = () => setShow(false);
-const handleShow = () => setShow(true);
+
 
 useEffect(() => {
 getScategories()
+setFiles( [ 
+{ 
+source: art.imageart, 
+options: { type: 'local' } 
+} 
+]) 
 }, [])
 const getScategories=async()=>{
 await fetchscategories().then(res=>{setScategories(res.data)
@@ -42,11 +46,11 @@ e.preventDefault();
 const form = e.currentTarget;
 if (form.checkValidity() === true) {
 //faire le add dans la BD
-addarticle(article)
+editarticle(article)
 .then(res => {
 //const response = res.data;
 // faire le add dans le tableau affiché
-addproduct(article);
+updateproduct(article);
 //vider le form
 handleReset()
 setValidated(false);
@@ -64,7 +68,15 @@ handleClose()
 }
 
 const serverOptions = () => {  
-return { 
+return {
+    load: (source, load, error, progress, abort, headers) => { 
+var myRequest = new Request(source); 
+fetch(myRequest).then(function(response) { 
+response.blob().then(function(myBlob) { 
+load(myBlob); 
+}); 
+}); 
+}, 
 
     process: (fieldName, file, metadata, load, error, progress, abort)=> { 
         
@@ -95,19 +107,13 @@ return (
 <div >
 <nav className="navbar navbar-expand-lg navbar-dark bg-success">
 <div className="container-fluid">
-<Button
-onClick={handleShow}
-className="btn btn-outline-light"
-style={{float: 'left','margin':10,'left':10,fontFamily:'Arial'}}>
-<i className="fa-solid fa-circle-plus"></i>&nbsp;
-Nouveau
-</Button>
+
 </div>
 </nav>
 <Modal show={show} onHide={handleClose}>
 <Form noValidate validated={validated} onSubmit={handleSubmit}>
 <Modal.Header closeButton>
-<h2>Create Product</h2>
+<h2>iupdate Product</h2>
 </Modal.Header>
 <Modal.Body>
 <div className="container w-100 d-flex justify-content-center">
@@ -230,4 +236,4 @@ onClick={()=>handleReset()}>Annuler</Button>
 </div>
 )
 }
-export default Insertarticle
+export default EditArticle

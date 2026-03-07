@@ -1,11 +1,24 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import {
   MaterialReactTable,
   useMaterialReactTable  
 } from 'material-react-table';
 import { Box } from '@mui/material';
 import { Button } from 'react-bootstrap';
-const ArticleList = ({ products,deleteProduct }) => {
+import EditArticle from './EditArticle';
+
+
+
+const ArticleList = ({ products,deleteProduct,updateProduct }) => {
+  const[art,setArt]=useState({})
+const [show,setShow]=useState(false);
+
+const handleClose=()=>setShow(false);
+const handleShow=()=>setShow(true); 
+const modifart=(value)=>{
+setArt(value);
+handleShow();
+}
   //should be memoized or stable
   const columns = useMemo(
     () => [
@@ -65,9 +78,7 @@ size: 100,
 Cell: ({ cell, row }) => (
 <div >
 <Button
-onClick={() => {
-console.log("modification ...")
-}}
+onClick={() => {modifart(cell.row.original)}}
 variant="warning"
 size="md"
 className="text-warning btn-link edit"
@@ -95,7 +106,16 @@ className="text-danger btn-link delete"
     data: products, //data must be memoized or stable (useState, useMemo, defined outside of this component, etc.)
   });
 
-  return <MaterialReactTable table={table} />;
+  return  (
+    <>
+    {show && <EditArticle 
+    show={show}
+    art={art} 
+    updateproduct={updateProduct} 
+    handleClose={handleClose} />}
+  <MaterialReactTable table={table} />;
+  </>
+  )
 };
 
 export default ArticleList;
